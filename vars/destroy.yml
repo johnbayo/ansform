@@ -1,0 +1,22 @@
+terraform_import: false
+
+import_resources:
+
+terraform_apply: false
+
+terraform_apply_target: false
+
+apply_target_resources: false
+
+terraform_state_rm: 
+  - "opentelekomcloud_vpc_subnet_v1.subnet[0]"
+  - "opentelekomcloud_vpc_v1.vpc"
+  - "opentelekomcloud_kms_key_v1.resourcekey[0]"
+
+state_rm_resources: false
+
+terraform_destroy: true
+
+terraform_destroy_target: false
+
+destroy_target_resources: 

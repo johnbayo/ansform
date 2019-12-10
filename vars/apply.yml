@@ -1,0 +1,20 @@
+terraform_import: true 
+
+import_resources:
+  - { name: 'opentelekomcloud_vpc_v1.vpc', id: 'xxxxxxxxxxxxxxxxxxxxxx' }
+
+terraform_apply: true
+
+terraform_apply_target: false
+
+apply_target_resources: 
+
+terraform_state_rm: false
+
+state_rm_resources: 
+
+terraform_destroy: false
+
+terraform_destroy_target: false
+
+destroy_target_resources: 

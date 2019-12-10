@@ -1,0 +1,53 @@
+---
+# tasks file for terraform
+- name: "initialize terraform"
+  shell: "{{terraform_binary}} init -backend-config=credentials.auto.tfvars"
+
+- name: "check terraform version"
+  command: "{{terraform_binary}} version"
+  register: version 
+
+- debug:
+    msg: "{{ version.stdout_lines }}"
+
+- name: "validate all terraform files"
+  command: "{{terraform_binary}} validate"
+  register: validate
+
+- debug:
+    msg: "{{ validate.stdout_lines }}"
+
+- name: "Importing {{ item.name }} to the Project"
+  command: "{{terraform_binary}} import -lock=false {{ item.name }} {{ item.id }}"
+  when: terraform_import
+  with_items: "{{ import_resources }}"
+
+- name:  Changes to be applied below
+  command: "{{terraform_binary}} plan"
+  register: output_tfstate
+
+- debug:
+    msg: "{{ output_tfstate.stdout_lines }}"
+
+- name: Terraform apply 
+  shell: "{{terraform_binary}} apply -lock=false -auto-approve"
+  when: terraform_apply
+
+- name: "deploying {{ item }} to the project"
+  command: "{{terraform_binary}} apply -target {{ item }}"
+  when: terraform_apply_target
+  with_items: "{{ apply_target_resources }}"
+
+- name: removing infrastructure from the state file
+  command: "{{terraform_binary}} state rm -lock=false {{ item }}"
+  when: terraform_state_rm
+  with_items: "{{ state_rm_resources }}"
+
+- name: destroying the following resources
+  command: "{{terraform_binary}} destroy -lock=false -auto-approve"
+  when: terraform_destroy
+
+- name: "destroying {{ item }} from the project"
+  command: "{{terraform_binary}}destroy -target {{ item }}"
+  when: terraform_destroy_target
+  with_items: "{{ destroy_target_resources }}"
