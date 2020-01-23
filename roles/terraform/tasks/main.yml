@@ -2,6 +2,10 @@
 # tasks file for terraform
 - name: "initialize terraform"
   shell: "{{terraform_binary}} init -backend-config=credentials.auto.tfvars"
+  when: backend_state
+
+- name: "initialize terraform"
+  shell: "{{terraform_binary}} init"
 
 - name: "check terraform version"
   command: "{{terraform_binary}} version"

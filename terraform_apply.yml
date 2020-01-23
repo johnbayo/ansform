@@ -15,10 +15,11 @@
         - "*.tfvars"
         - "*.conf"
         - "*.pub"
+        - "*.tmpl"
 
   roles:
     - role: terraform 
 
   post_tasks:
     - name: delete terraform files after execution
-      shell: "rm *.tf *.tfvars *.conf *.pub"
+      shell: "rm *.tf *.tfvars *.conf *.pub *.tmpl"
